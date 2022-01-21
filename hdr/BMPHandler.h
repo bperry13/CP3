@@ -8,6 +8,7 @@
 */
 
 #include <stdio.h>
+#include <stdint.h>
 #include "Image.h"
 
 struct BMP_Header {
@@ -21,7 +22,18 @@ struct BMP_Header {
 
 struct DIB_Header{
 	//TODO: Finish struct
-    char temp[40]; //not quite done!----------------------------------------
+    //char temp[40]; //not quite done!----------------------------------------
+    int dib_size;
+    int image_width;
+    int image_height;
+    int16_t planes;
+    int16_t bits_per_pxl;
+    int compression;
+    int image_size;
+    int x_pxl_per_m;
+    int y_pxl_per_m;
+    int color_table;
+    int imp_color_count;
 };
 
 /**
