@@ -22,7 +22,6 @@ struct BMP_Header {
 
 struct DIB_Header{
 	//TODO: Finish struct
-    //char temp[40]; //not quite done!----------------------------------------
     int dib_size;
     int image_width;
     int image_height;
@@ -45,10 +44,10 @@ struct DIB_Header{
 void readBMPHeader(FILE* file, struct BMP_Header* header);
 
 /**
- * Write BMP header of a file. Useful for creating a BMP file.
+ * Write BMP header of a header. Useful for creating a BMP header.
  *
- * @param  file: A pointer to the file being written
- * @param  header: The header to write to the file
+ * @param  header: A pointer to the header being written
+ * @param  header: The header to write to the header
  */
 void writeBMPHeader(FILE* file, struct BMP_Header* header);
 
