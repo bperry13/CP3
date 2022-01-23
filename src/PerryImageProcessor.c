@@ -22,23 +22,55 @@
 
 int main(int argc, char *argv[]) {
 
-
     //format is ./PerryImageProcessor input_file filter -o output_file
     //i.e. ./PerryImageProcessor test2.bmp -g -o test2_gray.bmp
-
+    //input parameters
+    char *input = argv[optind + 1];
+    char *output = argv[optind + 2];
+    //get filter flag
+    char* filters;
+    filters = "gcs";
     //g = grayscale, c=color shift, s=scaling
     int filter, gflag = 0, cflag = 0, sflag = 0;
-    char* filters;
 
-    
-    //get filter flag
-    filters = "gcs";
+
+    //header functionality
+    struct BMP_Header bmp_header;
+    struct DIB_Header dib_header;
+
+    //open input file
+    FILE* input_fp = fopen(input, "rb");
+    if (input_fp == NULL) {
+        printf("ERROR: File does not exist in your directory.");
+        return EXIT_FAILURE;
+    }
+
+    //read bitmap bmp_header
+    readBMPHeader(input_fp, &bmp_header);
+
+    //read dib bmp_header
+    readDIBHeader(input_fp, &dib_header);
+
+    //allocate mem for
+    struct Pixel** pixels = (struct Pixel**)malloc(sizeof(struct Pixel*) * dib_header.image_width);
+
+    //read pixel array
+    for (int p = 0; p < dib_header.image_width; p++) {
+        pixels[p] = (struct Pixel*)malloc(sizeof(struct Pixel) * dib_header.image_height);
+    }
+    readPixelsBMP(input_fp, pixels, dib_header.image_width, dib_header.image_height);
+
+    fclose(input_fp);
+
+    Image* img = image_create(pixels, dib_header.image_width, dib_header.image_height);
+
     while ((filter = getopt(argc, argv, filters)) != -1) {
         //confirm only one filter
         switch (filter) {
             case 'g':
                 gflag = 1;
                 printf("applying grayscale filter...\n");
+                //image_apply_bw(img);
                 break;
             case 'c':
                 cflag = 1;
@@ -56,76 +88,18 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    //vars for file names
-    char *input = argv[optind];
-    char *output = argv[optind + 1];
-
-    //open input file
-    FILE* input_fp = fopen(input, "rb");
-    if (input_fp == NULL) {
-        printf("ERROR: File does not exist in your directory.");
-        return EXIT_FAILURE;
-    }
-
     //open output file
-    FILE* output_fp = fopen(output, "w");
+    FILE* output_fp = fopen(output, "wb");
     if (output_fp == NULL) {
         printf("ERROR: Output file not created.");
         return EXIT_FAILURE;
     }
 
-    struct BMP_Header bmp_header;
-    struct DIB_Header dib_header;
-
-    //read bitmap bmp_header
-    readBMPHeader(input_fp, &bmp_header);
-
-    //read dib bmp_header
-    readDIBHeader(input_fp, &dib_header);
-
-    //read a single pixel. (format is BGR)
-    unsigned char r, g, b;
-
-    //1st pixel
-    fread(&b, sizeof(char), 1, input_fp);
-    fread(&g, sizeof(char), 1, input_fp);
-    fread(&r, sizeof(char), 1, input_fp);
-    printf("color: B=%d, G=%d, R=%d\n", b, g, r);
-
-    //2nd pixel
-    fread(&b, sizeof(char), 1, input_fp);
-    fread(&g, sizeof(char), 1, input_fp);
-    fread(&r, sizeof(char), 1, input_fp);
-    printf("color: B=%d, G=%d, R=%d\n", b, g, r);
-
-    //two pixel pad in the file here
-    fseek(input_fp, sizeof(unsigned char) * 2, SEEK_CUR);
-
-    //3rd pixel
-    fread(&b, sizeof(char), 1, input_fp);
-    fread(&g, sizeof(char), 1, input_fp);
-    fread(&r, sizeof(char), 1, input_fp);
-    printf("color: B=%d, G=%d, R=%d\n", b, g, r);
-
-    //4th pixel
-    fread(&b, sizeof(char), 1, input_fp);
-    fread(&g, sizeof(char), 1, input_fp);
-    fread(&r, sizeof(char), 1, input_fp);
-    printf("color: B=%d, G=%d, R=%d\n", b, g, r);
-
-    //short writing example wb=write binary
-    /*
-    FILE* outptr = fopen(output, "wb");
-    fwrite(&bmp_header.signature, sizeof(char) * 2, 1, outptr);
-    fwrite(&bmp_header.size, sizeof(int), 1, outptr);
-    fwrite(&bmp_header.reserved1, sizeof(short), 1, outptr);
-    fwrite(&bmp_header.reserved2, sizeof(short), 1, outptr);
-    fwrite(&bmp_header.offset_pixel_array, sizeof(int), 1, outptr);
-
-    fwrite(&dib_header, sizeof(char), 40, outptr);
-    */
-
-    fclose(input_fp);
+    writeBMPHeader(output_fp, &bmp_header);
+    writeDIBHeader(output_fp, &dib_header);
+    writePixelsBMP(output_fp, image_get_pixels(img),
+                   image_get_width(img),image_get_width(img));
+    image_destroy((Image **) img);
     fclose(output_fp);
 
     return 0;

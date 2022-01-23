@@ -3,8 +3,8 @@
 *
 * Completion time: ?
 *
-* @author (your name), Ruben Acuna
-* @version 9/9/2021
+* @author Brett Perry, Ruben Acuna
+* @version 1.24.22
 */
 
 #ifndef PixelProcessor_H
@@ -25,8 +25,11 @@ struct Image {
 	int height;
 };
 
-struct Pixel{
+struct Pixel {
 	//TODO: Finish struct
+    unsigned char pBlue;
+    unsigned char pGreen;
+    unsigned char pRed;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
