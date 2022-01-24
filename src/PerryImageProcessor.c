@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
     filters = "gcs";
     //g = grayscale, c=color shift, s=scaling
     int filter, gflag = 0, cflag = 0, sflag = 0;
-
+    int height, width;
 
     //header functionality
     struct BMP_Header bmp_header;
@@ -51,13 +51,13 @@ int main(int argc, char *argv[]) {
     //read dib bmp_header
     readDIBHeader(input_fp, &dib_header);
 
-    //allocate mem for
+    //allocate mem for pixels
     struct Pixel** pixels = (struct Pixel**)malloc(sizeof(struct Pixel*) * dib_header.image_width);
+    for (int p = 0; p < dib_header.image_width; p++) {
+        pixels[p] = (struct Pixel*)malloc(sizeof(struct Pixel) * dib_header.image_width);
+    }
 
     //read pixel array
-    for (int p = 0; p < dib_header.image_width; p++) {
-        pixels[p] = (struct Pixel*)malloc(sizeof(struct Pixel) * dib_header.image_height);
-    }
     readPixelsBMP(input_fp, pixels, dib_header.image_width, dib_header.image_height);
 
     fclose(input_fp);
@@ -97,8 +97,7 @@ int main(int argc, char *argv[]) {
 
     writeBMPHeader(output_fp, &bmp_header);
     writeDIBHeader(output_fp, &dib_header);
-    writePixelsBMP(output_fp, image_get_pixels(img),
-                   image_get_width(img),image_get_width(img));
+    writePixelsBMP(output_fp, pixels, dib_header.image_width, dib_header.image_height);
     image_destroy((Image **) img);
     fclose(output_fp);
 

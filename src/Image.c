@@ -15,7 +15,13 @@
  * @return A pointer to a new image.
 */
 Image* image_create(struct Pixel** pArr, int width, int height) {
+    int padding;
+    int p = sizeof(struct Pixel);
     pArr = (struct Pixel**) malloc(sizeof(struct Pixel*) * width);
+    padding = (p - (width * sizeof(struct Pixel)) % p) % p;
+
+
+
     return (Image *) pArr;
 }
 
