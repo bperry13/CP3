@@ -124,7 +124,9 @@ void writeDIBHeader(FILE* file, struct DIB_Header* header) {
  * @param  width: Width of the image that this header is for
  * @param  height: Height of the image that this header is for
  */
-//void makeBMPHeader(struct BMP_Header* header, int width, int height);
+void makeBMPHeader(struct BMP_Header* header, int width, int height) {
+
+}
 
 /**
 * Make new DIB header based on width and height.Useful for creating a BMP file.
@@ -133,7 +135,9 @@ void writeDIBHeader(FILE* file, struct DIB_Header* header) {
 * @param  width: Width of the image that this header is for
 * @param  height: Height of the image that this header is for
 */
-//void makeDIBHeader(struct DIB_Header* header, int width, int height);
+void makeDIBHeader(struct DIB_Header* header, int width, int height) {
+
+}
 
 /**
  * Read Pixels from BMP file based on width and height.
@@ -144,7 +148,21 @@ void writeDIBHeader(FILE* file, struct DIB_Header* header) {
  * @param  height: Height of the pixel array of this image
  */
 void readPixelsBMP(FILE* file, struct Pixel** pArr, int width, int height) {
+    int padding;
+    int x, y;
+    padding = 4 - (3*width) % 4;
 
+    //iterate scanlines
+    for (y = 0; y < height; y++) {
+        for (x = 0; x < width; x++) {
+            fread(&pArr[y][x].pBlue, sizeof(unsigned char), 1, file);
+            fread(&pArr[y][x].pGreen, sizeof(unsigned char), 1, file);
+            fread(&pArr[y][x].pRed, sizeof(unsigned char), 1, file);
+        }
+
+        // skip padding
+        fseek(file, padding, SEEK_CUR);
+    }
 }
 
 /**
@@ -156,6 +174,22 @@ void readPixelsBMP(FILE* file, struct Pixel** pArr, int width, int height) {
  * @param  height: Height of the pixel array of this image
  */
 void writePixelsBMP(FILE* file, struct Pixel** pArr, int width, int height) {
+    int padding = 2;
+    int x, y, p;
+    padding = 4 - (3 * width) % 4;
 
+    //iterate scanlines
+    for (y = 0; y < height; y++) {
+        for (x = 0; x < width; x++) {
+            fwrite(&pArr[y][x].pBlue, sizeof(unsigned char), 1, file);
+            fwrite(&pArr[y][x].pGreen, sizeof(unsigned char), 1, file);
+            fwrite(&pArr[y][x].pRed, sizeof(unsigned char), 1, file);
+        }
+
+        // skip padding write for loop to add chars
+        for (p = 0; p < padding; p++) {
+            fwrite(" ", sizeof(unsigned char), 1, file);
+        }
+    }
 }
 
