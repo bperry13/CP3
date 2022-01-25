@@ -15,14 +15,18 @@
  * @return A pointer to a new image.
 */
 Image* image_create(struct Pixel** pArr, int width, int height) {
-    int padding;
-    int p = sizeof(struct Pixel);
-    pArr = (struct Pixel**) malloc(sizeof(struct Pixel*) * width);
-    padding = (p - (width * sizeof(struct Pixel)) % p) % p;
 
+    //allocate mem
+    Image* img = malloc(sizeof(struct Image));
+    //assign height
+    img->height = height;
+    //assign width
+    img->width = width;
+    //assign pixel array
+    img->pArr = pArr;
 
-
-    return (Image *) pArr;
+    //return new image
+    return img;
 }
 
 
@@ -64,6 +68,24 @@ int image_get_height(Image* img) {
 */
 void image_apply_bw(Image* img) {
 
+    int r, g, b, grayscale;
+
+    for (int y = 0; y < image_get_height(img); y++) {
+        for (int x = 0; x < image_get_width(img); x++) {
+
+            b = img->pArr[y][x].pBlue;
+            g = img->pArr[y][x].pGreen;
+            r = img->pArr[y][x].pRed;
+
+            //find average value of pixels
+            grayscale = 0.299*r + 0.587*g + 0.114*b;
+
+            //write average value of pixels
+            img->pArr[y][x].pBlue = grayscale;
+            img->pArr[y][x].pGreen = grayscale;
+            img->pArr[y][x].pRed = grayscale;
+        }
+    }
 }
 
 /**
