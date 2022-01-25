@@ -11,12 +11,20 @@ back to a BMP file that can be viewed on the system.
 The command line parameters should be entered in the order below.
 1: the filter 2: the file you want to load 3: the filename for the output image
 
-To compile:
+To compile from root directory:
 gcc src/BMPHandler.c src/Image.c src/PerryImageProcessor.c
 
 To run grayscale:
-./a.out -g ./res/filename.bmp outputfilename.bmp
+./a.out -g ./res/test2.bmp test2_output.bmp
+./a.out -g ./res/ttt.bmp ttt_output.bmp
+./a.out -g ./res/wb.bmp wb_output.bmp
 
 To run color shift:
+./a.out -c ./res/test2.bmp test2_output.bmp
+./a.out -c ./res/ttt.bmp ttt_output.bmp
+./a.out -c ./res/wb.bmp wb_output.bmp
+note - prompt will appear in CLI to enter shift values
+
 
 To run scale:
+note - did not finish :(

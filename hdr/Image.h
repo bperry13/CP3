@@ -1,7 +1,7 @@
 ﻿/**
 * Specification for an image ADT.
 *
-* Completion time: ?
+* Completion time: 20 hours
 *
 * @author Brett Perry, Ruben Acuna
 * @version 1.24.22

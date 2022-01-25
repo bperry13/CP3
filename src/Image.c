@@ -1,6 +1,11 @@
-//
-// Created by Brett Perry on 1/20/22.
-//
+/**
+* Implementation of several functions to manipulate Image.
+*
+* Completion time: 20 hours
+*
+* @author Brett Perry, Ruben Acuna
+* @version 1.24.22
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include "../hdr/Image.h"
@@ -98,6 +103,41 @@ void image_apply_bw(Image* img) {
  * @param  bShift: the shift value of color b shift
  */
 void image_apply_colorshift(Image* img, int rShift, int gShift, int bShift) {
+
+    int r, g, b, b_tot, g_tot, r_tot, min=0, max=255;
+
+    for (int y = 0; y < image_get_height(img); y++) {
+        for (int x = 0; x < image_get_width(img); x++) {
+
+            b = img->pArr[y][x].pBlue;
+            g = img->pArr[y][x].pGreen;
+            r = img->pArr[y][x].pRed;
+
+            b_tot = b + bShift;
+            if (b_tot > max) {
+                b_tot = max;
+            } else if (b_tot < min) {
+                b_tot = min;
+            }
+            g_tot = g + gShift;
+            if (g_tot > max) {
+                g_tot = max;
+            } else if (g_tot < min) {
+                g_tot = min;
+            }
+            r_tot = r + rShift;
+            if (r_tot > max) {
+                r_tot = max;
+            } else if (r_tot < min) {
+                r_tot = min;
+            }
+
+            //write average value of pixels
+            img->pArr[y][x].pBlue = b_tot;
+            img->pArr[y][x].pGreen = g_tot;
+            img->pArr[y][x].pRed = r_tot;
+        }
+    }
 
 }
 

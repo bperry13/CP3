@@ -1,7 +1,7 @@
 /**
 * Implementation of several functions to manipulate BMP files.
 *
-* Completion time: ?
+* Completion time: 20
 *
 * @author Brett Perry, Ruben Acuna
 * @version 1.24.22
@@ -142,7 +142,7 @@ void writePixelsBMP(FILE* file, struct Pixel** pArr, int width, int height) {
     int x, y, p;
 
     padding = 4 - (3 * width) % 4;
-    printf("%d", padding);
+    printf("%d\n", padding);
 
     //iterate scanlines
     for (y = 0; y < height; y++) {
@@ -153,7 +153,6 @@ void writePixelsBMP(FILE* file, struct Pixel** pArr, int width, int height) {
         }
 
         // skip padding write for loop to add chars
-
         for (p = 0; p < padding; p++) {
             fwrite(" ", sizeof(unsigned char), 1, file);
         }

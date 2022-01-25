@@ -7,7 +7,7 @@
  * 3) a scale operation. The resulting File will be saved back to a
  *    BMP File that can be viewed on the system
 *
-* Completion time: ?
+* Completion time: 20
 *
 * @author Brett Perry, Ruben Acuna
 * @version 1.24.22
@@ -31,6 +31,7 @@ int main(int argc, char *argv[]) {
     //g = grayscale, c=color shift, s=scaling
     int filter, gflag = 0, cflag = 0, sflag = 0;
     int height, width;
+    int r, g, b, min, max;
 
     //header functionality
     struct BMP_Header bmp_header;
@@ -71,11 +72,24 @@ int main(int argc, char *argv[]) {
                 break;
             case 'c':
                 cflag = 1;
+                min = 0;
+                max = 255;
+                printf("Welcome to color shift!\n");
+                printf("Enter a number to shift each rgb pixel.\n");
+                printf("shift blue pixel by --> ");
+                scanf("%d", &b);
+                printf("shift green pixel by --> ");
+                scanf("%d", &g);
+                printf("shift blue pixel by --> ");
+                scanf("%d", &r);
                 printf("applying color shift filter...\n");
+                image_apply_colorshift(img, r, g, b);
                 break;
             case 's':
                 sflag = 1;
                 printf("applying scaling filter...\n");
+                float factor = 1;
+                image_apply_resize(img, factor);
                 break;
             case '?':
                 printf("Error: unknown filter -%c.\n", optopt);

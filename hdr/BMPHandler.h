@@ -1,7 +1,7 @@
 /**
 * Implementation of several functions to manipulate BMP files.
 *
-* Completion time: ?
+* Completion time: 20
 *
 * @author Brett Perry, Ruben Acuna
 * @version 1.24.22
