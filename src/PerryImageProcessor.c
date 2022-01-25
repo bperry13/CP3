@@ -87,8 +87,10 @@ int main(int argc, char *argv[]) {
                 break;
             case 's':
                 sflag = 1;
-                printf("applying scaling filter...\n");
                 float factor = 1;
+                printf("Enter the scale --> ");
+                scanf("%f", &factor);
+                printf("applying scaling filter...\n");
                 image_apply_resize(img, factor);
                 break;
             case '?':

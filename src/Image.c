@@ -149,4 +149,25 @@ void image_apply_colorshift(Image* img, int rShift, int gShift, int bShift) {
 */
 void image_apply_resize(Image* img, float factor) {
 
+    int width, height, padding;
+
+    //determine new dims
+    width = img->width * factor;
+    height = img->height * factor;
+
+    //determine new padding
+    padding = 4 - (3 * width) % 4;
+
+    //determine new img size
+    img->pArr = (width * sizeof(struct Pixel) + padding) * abs(height);
+
+    for (int y = 0; y < image_get_height(img); y++) {
+        for (int i = 0; i < factor; i++) {
+            for (int x = 0; x < image_get_width(img); x++) {
+                for (int j = 0; j < factor; j++) {
+                    image_get_pixels(img);
+                }
+            }
+        }
+    }
 }

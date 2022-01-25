@@ -141,8 +141,8 @@ void writePixelsBMP(FILE* file, struct Pixel** pArr, int width, int height) {
     int padding;
     int x, y, p;
 
+    //get padding
     padding = 4 - (3 * width) % 4;
-    printf("%d\n", padding);
 
     //iterate scanlines
     for (y = 0; y < height; y++) {

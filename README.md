@@ -15,16 +15,19 @@ To compile from root directory:
 gcc src/BMPHandler.c src/Image.c src/PerryImageProcessor.c
 
 To run grayscale:
-./a.out -g ./res/test2.bmp test2_output.bmp
-./a.out -g ./res/ttt.bmp ttt_output.bmp
-./a.out -g ./res/wb.bmp wb_output.bmp
+./a.out -g ./res/test2.bmp test2_g_output.bmp
+./a.out -g ./res/ttt.bmp ttt_g_output.bmp
+./a.out -g ./res/wb.bmp wb_g_output.bmp
 
 To run color shift:
-./a.out -c ./res/test2.bmp test2_output.bmp
-./a.out -c ./res/ttt.bmp ttt_output.bmp
-./a.out -c ./res/wb.bmp wb_output.bmp
+./a.out -c ./res/test2.bmp test2_c_output.bmp
+./a.out -c ./res/ttt.bmp ttt_c_output.bmp
+./a.out -c ./res/wb.bmp wb_c_output.bmp
 note - prompt will appear in CLI to enter shift values
 
 
 To run scale:
-note - did not finish :(
+./a.out -c ./res/test2.bmp test2_s_output.bmp
+./a.out -c ./res/ttt.bmp ttt_s_output.bmp
+./a.out -c ./res/wb.bmp wb_s_output.bmp
+note - I gave it my best shot. :|
