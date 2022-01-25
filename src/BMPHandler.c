@@ -25,11 +25,6 @@ void readBMPHeader(FILE* file, struct BMP_Header* header) {
     fread(&header->offset_pixel_array, sizeof(int), 1, file);
 
     //display contents
-    printf("signature: %c%c\n", header->signature[0], header->signature[1]);
-    printf("size: %d\n", header->size);
-    printf("reserved1: %d\n", header->reserved1);
-    printf("reserved2: %d\n", header->reserved2);
-    printf("offset_pixel_array: %d\n", header->offset_pixel_array);
 }
 
 /**
@@ -44,12 +39,6 @@ void writeBMPHeader(FILE* file, struct BMP_Header* header) {
     fwrite(&header->reserved1, sizeof(short), 1, file);
     fwrite(&header->reserved2, sizeof(short), 1, file);
     fwrite(&header->offset_pixel_array, sizeof(int), 1, file);
-
-    printf("output signature: %c%c\n", header->signature[0], header->signature[1]);
-    printf("output size: %d\n", header->size);
-    printf("output reserved1: %d\n", header->reserved1);
-    printf("output reserved2: %d\n", header->reserved2);
-    printf("output offset_pixel_array: %d\n", header->offset_pixel_array);
 }
 
 /**
@@ -70,18 +59,6 @@ void readDIBHeader(FILE* file, struct DIB_Header* header) {
     fread(&header->y_pxl_per_m, sizeof(int), 1, file);
     fread(&header->color_table, sizeof(int), 1, file);
     fread(&header->imp_color_count, sizeof(int), 1, file);
-
-    printf("header dib size: %d\n", header->dib_size);
-    printf("header dib image width: %d\n", header->image_width);
-    printf("header dib image height: %d\n", header->image_height);
-    printf("header dib planes: %d\n", header->planes);
-    printf("header dib bits per pixel: %d\n", header->bits_per_pxl);
-    printf("header dib compression: %d\n", header->compression);
-    printf("header dib image size: %d\n", header->image_size);
-    printf("header dib x pixel per meter: %d\n", header->x_pxl_per_m);
-    printf("header dib y pixel per meter: %d\n", header->y_pxl_per_m);
-    printf("header dib color table: %d\n", header->color_table);
-    printf("header dib important color count: %d\n", header->imp_color_count);
 }
 
 /**
@@ -102,19 +79,6 @@ void writeDIBHeader(FILE* file, struct DIB_Header* header) {
     fwrite(&header->y_pxl_per_m, sizeof(int), 1, file);
     fwrite(&header->color_table, sizeof(int), 1, file);
     fwrite(&header->imp_color_count, sizeof(int), 1, file);
-
-    printf("output header dib size: %d\n", header->dib_size);
-    printf("output header dib image width: %d\n", header->image_width);
-    printf("output header dib image height: %d\n", header->image_height);
-    printf("output header dib planes: %d\n", header->planes);
-    printf("output header dib bits per pixel: %d\n", header->bits_per_pxl);
-    printf("output header dib compression: %d\n", header->compression);
-    printf("output header dib image size: %d\n", header->image_size);
-    printf("output header dib x pixel per meter: %d\n", header->x_pxl_per_m);
-    printf("output header dib y pixel per meter: %d\n", header->y_pxl_per_m);
-    printf("output header dib color table: %d\n", header->color_table);
-    printf("output header dib important color count: %d\n", header->imp_color_count);
-
 }
 
 /**
@@ -174,9 +138,11 @@ void readPixelsBMP(FILE* file, struct Pixel** pArr, int width, int height) {
  * @param  height: Height of the pixel array of this image
  */
 void writePixelsBMP(FILE* file, struct Pixel** pArr, int width, int height) {
-    int padding = 2;
+    int padding;
     int x, y, p;
+
     padding = 4 - (3 * width) % 4;
+    printf("%d", padding);
 
     //iterate scanlines
     for (y = 0; y < height; y++) {
@@ -187,6 +153,7 @@ void writePixelsBMP(FILE* file, struct Pixel** pArr, int width, int height) {
         }
 
         // skip padding write for loop to add chars
+
         for (p = 0; p < padding; p++) {
             fwrite(" ", sizeof(unsigned char), 1, file);
         }

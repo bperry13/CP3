@@ -22,8 +22,6 @@
 
 int main(int argc, char *argv[]) {
 
-    //format is ./PerryImageProcessor input_file filter -o output_file
-    //i.e. ./PerryImageProcessor test2.bmp -g -o test2_gray.bmp
     //input parameters
     char *input = argv[optind + 1];
     char *output = argv[optind + 2];
@@ -52,14 +50,13 @@ int main(int argc, char *argv[]) {
     readDIBHeader(input_fp, &dib_header);
 
     //allocate mem for pixels
-    struct Pixel** pixels = (struct Pixel**)malloc(sizeof(struct Pixel*) * dib_header.image_width);
-    for (int p = 0; p < dib_header.image_width; p++) {
+    struct Pixel** pixels = (struct Pixel**)malloc(sizeof(struct Pixel*) * dib_header.image_height);
+    for (int p = 0; p < dib_header.image_height; p++) {
         pixels[p] = (struct Pixel*)malloc(sizeof(struct Pixel) * dib_header.image_width);
     }
 
     //read pixel array
     readPixelsBMP(input_fp, pixels, dib_header.image_width, dib_header.image_height);
-
     fclose(input_fp);
 
     Image* img = image_create(pixels, dib_header.image_width, dib_header.image_height);
@@ -70,7 +67,7 @@ int main(int argc, char *argv[]) {
             case 'g':
                 gflag = 1;
                 printf("applying grayscale filter...\n");
-                //image_apply_bw(img);
+                image_apply_bw(img);
                 break;
             case 'c':
                 cflag = 1;
@@ -98,6 +95,7 @@ int main(int argc, char *argv[]) {
     writeBMPHeader(output_fp, &bmp_header);
     writeDIBHeader(output_fp, &dib_header);
     writePixelsBMP(output_fp, pixels, dib_header.image_width, dib_header.image_height);
+    printf("Success! Your filtered image has been saved to the root folder.\n");
     image_destroy((Image **) img);
     fclose(output_fp);
 
